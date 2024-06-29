@@ -9,7 +9,7 @@ pipeline {
         // Checkout To The Service Branch
         stage('Checkout To Mcroservice Branch'){
             steps{
-                git branch: 'app-database', url: 'https://github.com/mexia419/realworld-microservice-project.git'
+                git branch: 'app-database', url: 'https://github.com/mexia27/realworld-microservice-project.git'
             }
         }
         // Deploy to The Staging/Test Environment
@@ -23,23 +23,23 @@ pipeline {
                 } 
             }
         }
-        // // Production Deployment Approval
-        // stage('Approve Prod Deployment') {
-        //     steps {
-        //             input('Do you want to proceed?')
-        //     }
-        // }
-        // // // Deploy to The Production Environment
-        // stage('Deploy Microservice To The Prod Env'){
-        //     steps{
-        //         script{
-        //             withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'Kubernetes-Credential', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
-        //                sh 'kubectl apply -f deploy-envs/prod-env/deployment.yaml'
-        //                sh 'kubectl apply -f deploy-envs/prod-env/service.yaml'  //ClusterIP Service
-        //             }
-        //         }
-        //     } 
-        // } 
+        // Production Deployment Approval
+        stage('Approve Prod Deployment') {
+            steps {
+                    input('Do you want to proceed?')
+            }
+        }
+        // // Deploy to The Production Environment
+        stage('Deploy Microservice To The Prod Env'){
+            steps{
+                script{
+                    withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'Kubernetes-Credential', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
+                       sh 'kubectl apply -f deploy-envs/prod-env/deployment.yaml'
+                       sh 'kubectl apply -f deploy-envs/prod-env/service.yaml'  //ClusterIP Service
+                    }
+                }
+            } 
+        } 
     }
     post {
     always {
